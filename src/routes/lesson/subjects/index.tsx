@@ -3,8 +3,8 @@ import {
   isApiError,
   isApiSuccess,
   type ApiResponse,
-} from "@/common/api/api.interface";
-import type { Subject } from "@/features/curriculum/curriculum.types";
+} from "@/common/types/api.interface";
+import type { Subject } from "@/common/types/curriculum.types";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 async function fetchSubjects(): Promise<Subject[]> {

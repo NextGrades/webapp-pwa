@@ -24,6 +24,8 @@ interface ApiErrorResponse {
 // Union type for API responses
 type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;
 
+type AxiosResponseWrapper<T> = { data: ApiResponse<T> };
+
 // Type guard to check if response is successful
 function isApiSuccess<T>(
   response: ApiResponse<T>
@@ -36,8 +38,11 @@ function isApiError<T>(response: ApiResponse<T>): response is ApiErrorResponse {
   return "statusCode" in response && "response" in response;
 }
 
-
-
-export type { ApiSuccessResponse, ApiErrorResponse, ApiResponse };
+export type {
+  ApiSuccessResponse,
+  ApiErrorResponse,
+  ApiResponse,
+  AxiosResponseWrapper,
+};
 
 export { isApiSuccess, isApiError, API_BASE_URL };
