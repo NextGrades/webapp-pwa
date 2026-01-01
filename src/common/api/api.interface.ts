@@ -1,0 +1,43 @@
+// types/api.ts
+
+const API_BASE_URL = import.meta.env.VITE_API_DEV_URL;
+
+// Generic success response wrapper
+interface ApiSuccessResponse<T> {
+  success: true;
+  message: string;
+  data: T;
+}
+
+// Error response from NestJS
+interface ApiErrorResponse {
+  statusCode: number;
+  timestamp: string;
+  path: string;
+  response: {
+    message: string | string[];
+    error: string;
+    statusCode: number;
+  };
+}
+
+// Union type for API responses
+type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;
+
+// Type guard to check if response is successful
+function isApiSuccess<T>(
+  response: ApiResponse<T>
+): response is ApiSuccessResponse<T> {
+  return "success" in response && response.success === true;
+}
+
+// Type guard to check if response is an error
+function isApiError<T>(response: ApiResponse<T>): response is ApiErrorResponse {
+  return "statusCode" in response && "response" in response;
+}
+
+
+
+export type { ApiSuccessResponse, ApiErrorResponse, ApiResponse };
+
+export { isApiSuccess, isApiError, API_BASE_URL };

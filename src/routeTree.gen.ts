@@ -9,12 +9,33 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TextToSpeechRouteImport } from './routes/text-to-speech'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LessonIndexRouteImport } from './routes/lesson/index'
+import { Route as LessonQuizRouteImport } from './routes/lesson/quiz'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
+import { Route as LessonSubjectsIndexRouteImport } from './routes/lesson/subjects/index'
+import { Route as LessonTopicsTopicIdRouteImport } from './routes/lesson/topics/$topicId'
+import { Route as LessonSubjectsSubjectIdRouteImport } from './routes/lesson/subjects/$subjectId'
 
+const TextToSpeechRoute = TextToSpeechRouteImport.update({
+  id: '/text-to-speech',
+  path: '/text-to-speech',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonIndexRoute = LessonIndexRouteImport.update({
+  id: '/lesson/',
+  path: '/lesson/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonQuizRoute = LessonQuizRouteImport.update({
+  id: '/lesson/quiz',
+  path: '/lesson/quiz',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
@@ -22,40 +43,125 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
   path: '/demo/tanstack-query',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LessonSubjectsIndexRoute = LessonSubjectsIndexRouteImport.update({
+  id: '/lesson/subjects/',
+  path: '/lesson/subjects/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonTopicsTopicIdRoute = LessonTopicsTopicIdRouteImport.update({
+  id: '/lesson/topics/$topicId',
+  path: '/lesson/topics/$topicId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonSubjectsSubjectIdRoute = LessonSubjectsSubjectIdRouteImport.update({
+  id: '/lesson/subjects/$subjectId',
+  path: '/lesson/subjects/$subjectId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/text-to-speech': typeof TextToSpeechRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/lesson/quiz': typeof LessonQuizRoute
+  '/lesson': typeof LessonIndexRoute
+  '/lesson/subjects/$subjectId': typeof LessonSubjectsSubjectIdRoute
+  '/lesson/topics/$topicId': typeof LessonTopicsTopicIdRoute
+  '/lesson/subjects': typeof LessonSubjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/text-to-speech': typeof TextToSpeechRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/lesson/quiz': typeof LessonQuizRoute
+  '/lesson': typeof LessonIndexRoute
+  '/lesson/subjects/$subjectId': typeof LessonSubjectsSubjectIdRoute
+  '/lesson/topics/$topicId': typeof LessonTopicsTopicIdRoute
+  '/lesson/subjects': typeof LessonSubjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/text-to-speech': typeof TextToSpeechRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/lesson/quiz': typeof LessonQuizRoute
+  '/lesson/': typeof LessonIndexRoute
+  '/lesson/subjects/$subjectId': typeof LessonSubjectsSubjectIdRoute
+  '/lesson/topics/$topicId': typeof LessonTopicsTopicIdRoute
+  '/lesson/subjects/': typeof LessonSubjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo/tanstack-query'
+  fullPaths:
+    | '/'
+    | '/text-to-speech'
+    | '/demo/tanstack-query'
+    | '/lesson/quiz'
+    | '/lesson'
+    | '/lesson/subjects/$subjectId'
+    | '/lesson/topics/$topicId'
+    | '/lesson/subjects'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo/tanstack-query'
-  id: '__root__' | '/' | '/demo/tanstack-query'
+  to:
+    | '/'
+    | '/text-to-speech'
+    | '/demo/tanstack-query'
+    | '/lesson/quiz'
+    | '/lesson'
+    | '/lesson/subjects/$subjectId'
+    | '/lesson/topics/$topicId'
+    | '/lesson/subjects'
+  id:
+    | '__root__'
+    | '/'
+    | '/text-to-speech'
+    | '/demo/tanstack-query'
+    | '/lesson/quiz'
+    | '/lesson/'
+    | '/lesson/subjects/$subjectId'
+    | '/lesson/topics/$topicId'
+    | '/lesson/subjects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  TextToSpeechRoute: typeof TextToSpeechRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  LessonQuizRoute: typeof LessonQuizRoute
+  LessonIndexRoute: typeof LessonIndexRoute
+  LessonSubjectsSubjectIdRoute: typeof LessonSubjectsSubjectIdRoute
+  LessonTopicsTopicIdRoute: typeof LessonTopicsTopicIdRoute
+  LessonSubjectsIndexRoute: typeof LessonSubjectsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/text-to-speech': {
+      id: '/text-to-speech'
+      path: '/text-to-speech'
+      fullPath: '/text-to-speech'
+      preLoaderRoute: typeof TextToSpeechRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lesson/': {
+      id: '/lesson/'
+      path: '/lesson'
+      fullPath: '/lesson'
+      preLoaderRoute: typeof LessonIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lesson/quiz': {
+      id: '/lesson/quiz'
+      path: '/lesson/quiz'
+      fullPath: '/lesson/quiz'
+      preLoaderRoute: typeof LessonQuizRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/tanstack-query': {
@@ -65,12 +171,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoTanstackQueryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lesson/subjects/': {
+      id: '/lesson/subjects/'
+      path: '/lesson/subjects'
+      fullPath: '/lesson/subjects'
+      preLoaderRoute: typeof LessonSubjectsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lesson/topics/$topicId': {
+      id: '/lesson/topics/$topicId'
+      path: '/lesson/topics/$topicId'
+      fullPath: '/lesson/topics/$topicId'
+      preLoaderRoute: typeof LessonTopicsTopicIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lesson/subjects/$subjectId': {
+      id: '/lesson/subjects/$subjectId'
+      path: '/lesson/subjects/$subjectId'
+      fullPath: '/lesson/subjects/$subjectId'
+      preLoaderRoute: typeof LessonSubjectsSubjectIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  TextToSpeechRoute: TextToSpeechRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  LessonQuizRoute: LessonQuizRoute,
+  LessonIndexRoute: LessonIndexRoute,
+  LessonSubjectsSubjectIdRoute: LessonSubjectsSubjectIdRoute,
+  LessonTopicsTopicIdRoute: LessonTopicsTopicIdRoute,
+  LessonSubjectsIndexRoute: LessonSubjectsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
