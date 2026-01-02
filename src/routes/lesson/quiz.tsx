@@ -1,23 +1,51 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import {
-  CheckCircle2,
-  BookOpen,
-  Lightbulb,
-  ChevronRight,
-  ArrowLeft,
-  Target,
-} from "lucide-react";
+import { CheckCircle2, BookOpen, ArrowLeft, Target } from "lucide-react";
 
 export const Route = createFileRoute("/lesson/quiz")({
   component: LessonPage,
 });
 
+interface Step {
+  step: number;
+  text: string;
+  result: string;
+}
+
+interface Example {
+  id: number;
+  title: string;
+  problem: string;
+  steps: Step[];
+}
+
+interface MultipleChoiceExercise {
+  id: number;
+  type: "multiple-choice";
+  question: string;
+  options: string[];
+  correct: number;
+}
+
+interface FillBlankExercise {
+  id: number;
+  type: "fill-blank";
+  question: string;
+  answer: string;
+}
+
+type Exercise = MultipleChoiceExercise | FillBlankExercise;
+
 function LessonPage() {
-  const [activeTab, setActiveTab] = useState("learn");
+  const [activeTab, setActiveTab] = useState<
+    "learn" | "examples" | "exercises"
+  >("learn");
   const [currentExample, setCurrentExample] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState({});
-  const [showResults, setShowResults] = useState({});
+  const [selectedAnswers, setSelectedAnswers] = useState<
+    Record<number, number | string>
+  >({});
+  const [showResults, setShowResults] = useState<Record<number, boolean>>({});
+  console.log(showResults);
 
   const lesson = {
     subject: "Mathematics",
@@ -32,7 +60,7 @@ function LessonPage() {
     ],
   };
 
-  const examples = [
+  const examples: Example[] = [
     {
       id: 1,
       title: "Factorization Method",
@@ -69,7 +97,7 @@ function LessonPage() {
     },
   ];
 
-  const exercises = [
+  const exercises: Exercise[] = [
     {
       id: 1,
       type: "multiple-choice",
@@ -85,11 +113,11 @@ function LessonPage() {
     },
   ];
 
-  const handleAnswerSelect = (id, value) => {
+  const handleAnswerSelect = (id: number, value: number | string) => {
     setSelectedAnswers((prev) => ({ ...prev, [id]: value }));
   };
 
-  const checkAnswer = (id) => {
+  const checkAnswer = (id: number) => {
     setShowResults((prev) => ({ ...prev, [id]: true }));
   };
 
@@ -130,7 +158,7 @@ function LessonPage() {
       {/* Modern Tabs - Pill Style */}
       <nav className="flex justify-center p-4 border-b bg-gray-50/50">
         <div className="flex p-1 bg-gray-200/50 rounded-xl gap-1">
-          {["learn", "examples", "exercises"].map((tab) => (
+          {(["learn", "examples", "exercises"] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}

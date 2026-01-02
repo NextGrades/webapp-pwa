@@ -3,7 +3,8 @@
   "short_name": "NGrades",
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#ffffff",
+  "description": "App to teach students variaous subjects through interactive content and quizzes.",
+  "theme_color": "#22379d",
   "background_color": "#ffffff",
   "icons": [
     {

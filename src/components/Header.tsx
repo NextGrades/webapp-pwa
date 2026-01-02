@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Home, Menu, GraduationCap, X, BookOpen } from "lucide-react";
+import { Home, Menu, X, BookOpen } from "lucide-react";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,9 +16,9 @@ export default function Header() {
     <>
       {/* Top Navigation Bar */}
       <header
-        className="py-3 px-6 shadow-sm border-b sticky top-0 z-40 bg-white"
+        className="py-3  shadow-sm border-b sticky top-0 z-40 bg-white"
         style={{ borderColor: "var(--white-soft)" }}>
-        <div className="flex items-center justify-between">
+        <div className="container flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsOpen(true)}

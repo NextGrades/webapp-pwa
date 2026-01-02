@@ -75,63 +75,63 @@ function LessonPage() {
   );
 }
 
-const examples = [
-  {
-    id: 1,
-    title: "Factorization Method",
-    problem: "x² + 5x + 6 = 0",
-    steps: [
-      {
-        step: 1,
-        text: "Find two numbers that multiply to 6 and add to 5",
-        result: "2 and 3",
-      },
-      { step: 2, text: "Rewrite as factors", result: "(x + 2)(x + 3) = 0" },
-      {
-        step: 3,
-        text: "Set each factor to zero",
-        result: "x + 2 = 0 or x + 3 = 0",
-      },
-      { step: 4, text: "Solve for x", result: "x = -2 or x = -3" },
-    ],
-  },
-  {
-    id: 2,
-    title: "Quadratic Formula",
-    problem: "2x² - 7x + 3 = 0",
-    steps: [
-      { step: 1, text: "Identify a, b, and c", result: "a = 2, b = -7, c = 3" },
-      { step: 2, text: "Apply formula", result: "x = (7 ± √25) / 4" },
-      { step: 3, text: "Simplify", result: "x = (7 ± 5) / 4" },
-      { step: 4, text: "Final answers", result: "x = 3 or 0.5" },
-    ],
-  },
-];
-const exercises = [
-  {
-    id: 1,
-    type: "multiple-choice",
-    question: "Solve the equation: x² - 9 = 0",
-    options: ["x = 3 only", "x = -3 only", "x = ±3", "x = 9"],
-    correct: 2,
-  },
-  {
-    id: 2,
-    type: "fill-blank",
-    question: "If x² - 5x + 6 = 0, then x = 2 or x = ___",
-    answer: "3",
-  },
-];
+// const examples = [
+//   {
+//     id: 1,
+//     title: "Factorization Method",
+//     problem: "x² + 5x + 6 = 0",
+//     steps: [
+//       {
+//         step: 1,
+//         text: "Find two numbers that multiply to 6 and add to 5",
+//         result: "2 and 3",
+//       },
+//       { step: 2, text: "Rewrite as factors", result: "(x + 2)(x + 3) = 0" },
+//       {
+//         step: 3,
+//         text: "Set each factor to zero",
+//         result: "x + 2 = 0 or x + 3 = 0",
+//       },
+//       { step: 4, text: "Solve for x", result: "x = -2 or x = -3" },
+//     ],
+//   },
+//   {
+//     id: 2,
+//     title: "Quadratic Formula",
+//     problem: "2x² - 7x + 3 = 0",
+//     steps: [
+//       { step: 1, text: "Identify a, b, and c", result: "a = 2, b = -7, c = 3" },
+//       { step: 2, text: "Apply formula", result: "x = (7 ± √25) / 4" },
+//       { step: 3, text: "Simplify", result: "x = (7 ± 5) / 4" },
+//       { step: 4, text: "Final answers", result: "x = 3 or 0.5" },
+//     ],
+//   },
+// ];
+// const exercises = [
+//   {
+//     id: 1,
+//     type: "multiple-choice",
+//     question: "Solve the equation: x² - 9 = 0",
+//     options: ["x = 3 only", "x = -3 only", "x = ±3", "x = 9"],
+//     correct: 2,
+//   },
+//   {
+//     id: 2,
+//     type: "fill-blank",
+//     question: "If x² - 5x + 6 = 0, then x = 2 or x = ___",
+//     answer: "3",
+//   },
+// ];
 
-const lesson = {
-  subject: "Mathematics",
-  topic: "Quadratic Equations",
-  grade: "SS2",
-  duration: "45 mins",
-  progress: 65,
-  objectives: [
-    "Identify quadratic equations",
-    "Solve using factorization method",
-    "Apply the quadratic formula",
-  ],
-};
+// const lesson = {
+//   subject: "Mathematics",
+//   topic: "Quadratic Equations",
+//   grade: "SS2",
+//   duration: "45 mins",
+//   progress: 65,
+//   objectives: [
+//     "Identify quadratic equations",
+//     "Solve using factorization method",
+//     "Apply the quadratic formula",
+//   ],
+// };
