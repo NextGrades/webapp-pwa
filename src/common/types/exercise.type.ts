@@ -1,3 +1,39 @@
+// Define types
+export type ExerciseConfig = {
+  name: string;
+  inputType: "text";
+  prompt: string;
+};
+
+export type FillInBlankData = {
+  class_level: number;
+  exercise_type: "fill-in-blank";
+  instructions: string;
+  exercises: {
+    sentence_with_blank: string;
+    correct_answer: string;
+  }[];
+};
+
+export type SpellingData = {
+  class_level: number;
+  exercise_type: "academic-spelling";
+  instructions: string;
+  exercises: {
+    word: string;
+    correct_answer: string;
+    difficulty: string; // or "easy" | "medium" | "hard"
+  }[];
+};
+
+export type QuickExerciseData = FillInBlankData | SpellingData;
+
+export type ExerciseName =
+  | "academic-spelling"
+  | "fill-in-blank"
+  // | "one-word-answer"
+  // | "correct-the-error";
+
 export const excerciseScope = {
   scope: {
     minClass: "Primary 3",

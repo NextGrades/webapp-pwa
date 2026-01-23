@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Home, Menu, X, BookOpen } from "lucide-react";
+import { Home, Menu, X, BookOpen, Speech } from "lucide-react";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -99,11 +99,7 @@ export default function Header() {
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors mb-2"
             activeProps={activeLinkStyles}>
-            <span
-              className="w-5 flex justify-center text-xs font-bold border rounded p-0.5"
-              style={{ borderColor: "var(--muted)" }}>
-              TTS
-            </span>
+            <Speech size={20} />
             <span className="font-semibold">Speech Tool</span>
           </Link>
         </nav>

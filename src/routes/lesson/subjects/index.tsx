@@ -1,5 +1,5 @@
+import { API_BASE_URL } from "@/common/api/axios";
 import {
-  API_BASE_URL,
   isApiError,
   isApiSuccess,
   type ApiResponse,

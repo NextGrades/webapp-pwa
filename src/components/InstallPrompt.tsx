@@ -6,14 +6,26 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
 }
 
+const PROMPT_DELAY = 2500;
+const EXIT_ANIMATION_MS = 350;
+
 export default function UnifiedInstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
+
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
+
+  // Mount control
   const [showPrompt, setShowPrompt] = useState(false);
 
+  // Animation control
+  const [isVisible, setIsVisible] = useState(false);
+
   useEffect(() => {
+    const dismissed = localStorage.getItem("pwa-install-dismissed");
+    if (dismissed) return;
+
     const ios =
       /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
     setIsIOS(ios);
@@ -24,13 +36,21 @@ export default function UnifiedInstallPrompt() {
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-      setShowPrompt(true);
+
+      setTimeout(() => {
+        setShowPrompt(true);
+        requestAnimationFrame(() => setIsVisible(true));
+      }, PROMPT_DELAY);
     };
 
     window.addEventListener("beforeinstallprompt", handler);
 
+    // iOS manual install prompt
     if (ios && !standalone) {
-      setShowPrompt(true);
+      setTimeout(() => {
+        setShowPrompt(true);
+        requestAnimationFrame(() => setIsVisible(true));
+      }, PROMPT_DELAY);
     }
 
     return () => window.removeEventListener("beforeinstallprompt", handler);
@@ -42,23 +62,33 @@ export default function UnifiedInstallPrompt() {
     await deferredPrompt.prompt();
     await deferredPrompt.userChoice;
 
-    setDeferredPrompt(null);
-    setShowPrompt(false);
+    dismissPrompt();
   };
 
-  const handleDismiss = () => {
-    setShowPrompt(false);
+  const dismissPrompt = () => {
+    setIsVisible(false);
     localStorage.setItem("pwa-install-dismissed", Date.now().toString());
+
+    setTimeout(() => {
+      setShowPrompt(false);
+      setDeferredPrompt(null);
+    }, EXIT_ANIMATION_MS);
   };
 
   if (isStandalone || !showPrompt) return null;
 
   return (
-    <div className="fixed inset-x-3 bottom-4 z-50 md:left-auto md:right-4 md:w-[22rem]">
-      <div className="relative rounded-xl bg-surface border border-gray-200 shadow-lg p-4">
+    <div className="fixed inset-x-3 bottom-4 z-50 md:left-auto md:right-4 md:w-88">
+      <div
+        className={`
+          relative rounded-xl bg-surface border border-gray-200 shadow-lg p-4
+          transform transition-all duration-350 ease-out
+          motion-reduce:transition-none motion-reduce:transform-none
+          ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
+        `}>
         {/* Close button */}
         <button
-          onClick={handleDismiss}
+          onClick={dismissPrompt}
           aria-label="Dismiss"
           className="absolute right-3 top-3 text-muted hover:text-foreground transition">
           <X size={18} />
@@ -101,7 +131,7 @@ export default function UnifiedInstallPrompt() {
                     Install app
                   </button>
                   <button
-                    onClick={handleDismiss}
+                    onClick={dismissPrompt}
                     className="rounded-md px-3 py-2 text-sm text-muted hover:bg-white-soft transition">
                     Not now
                   </button>
@@ -113,7 +143,7 @@ export default function UnifiedInstallPrompt() {
 
         {isIOS && (
           <button
-            onClick={handleDismiss}
+            onClick={dismissPrompt}
             className="mt-3 w-full rounded-md px-3 py-2 text-sm text-muted hover:bg-white-soft transition">
             Got it
           </button>

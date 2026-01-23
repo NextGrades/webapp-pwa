@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TextToSpeechRouteImport } from './routes/text-to-speech'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LessonIndexRouteImport } from './routes/lesson/index'
+import { Route as QuickExercisesExerciseSlugRouteImport } from './routes/quick-exercises/$exerciseSlug'
 import { Route as LessonQuizRouteImport } from './routes/lesson/quiz'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as LessonSubjectsIndexRouteImport } from './routes/lesson/subjects/index'
@@ -33,6 +34,12 @@ const LessonIndexRoute = LessonIndexRouteImport.update({
   path: '/lesson/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const QuickExercisesExerciseSlugRoute =
+  QuickExercisesExerciseSlugRouteImport.update({
+    id: '/quick-exercises/$exerciseSlug',
+    path: '/quick-exercises/$exerciseSlug',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LessonQuizRoute = LessonQuizRouteImport.update({
   id: '/lesson/quiz',
   path: '/lesson/quiz',
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/text-to-speech': typeof TextToSpeechRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/lesson/quiz': typeof LessonQuizRoute
+  '/quick-exercises/$exerciseSlug': typeof QuickExercisesExerciseSlugRoute
   '/lesson': typeof LessonIndexRoute
   '/lesson/subjects/$subjectId': typeof LessonSubjectsSubjectIdRoute
   '/lesson/topics/$topicId': typeof LessonTopicsTopicIdRoute
@@ -74,6 +82,7 @@ export interface FileRoutesByTo {
   '/text-to-speech': typeof TextToSpeechRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/lesson/quiz': typeof LessonQuizRoute
+  '/quick-exercises/$exerciseSlug': typeof QuickExercisesExerciseSlugRoute
   '/lesson': typeof LessonIndexRoute
   '/lesson/subjects/$subjectId': typeof LessonSubjectsSubjectIdRoute
   '/lesson/topics/$topicId': typeof LessonTopicsTopicIdRoute
@@ -85,6 +94,7 @@ export interface FileRoutesById {
   '/text-to-speech': typeof TextToSpeechRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/lesson/quiz': typeof LessonQuizRoute
+  '/quick-exercises/$exerciseSlug': typeof QuickExercisesExerciseSlugRoute
   '/lesson/': typeof LessonIndexRoute
   '/lesson/subjects/$subjectId': typeof LessonSubjectsSubjectIdRoute
   '/lesson/topics/$topicId': typeof LessonTopicsTopicIdRoute
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/text-to-speech'
     | '/demo/tanstack-query'
     | '/lesson/quiz'
+    | '/quick-exercises/$exerciseSlug'
     | '/lesson'
     | '/lesson/subjects/$subjectId'
     | '/lesson/topics/$topicId'
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/text-to-speech'
     | '/demo/tanstack-query'
     | '/lesson/quiz'
+    | '/quick-exercises/$exerciseSlug'
     | '/lesson'
     | '/lesson/subjects/$subjectId'
     | '/lesson/topics/$topicId'
@@ -117,6 +129,7 @@ export interface FileRouteTypes {
     | '/text-to-speech'
     | '/demo/tanstack-query'
     | '/lesson/quiz'
+    | '/quick-exercises/$exerciseSlug'
     | '/lesson/'
     | '/lesson/subjects/$subjectId'
     | '/lesson/topics/$topicId'
@@ -128,6 +141,7 @@ export interface RootRouteChildren {
   TextToSpeechRoute: typeof TextToSpeechRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   LessonQuizRoute: typeof LessonQuizRoute
+  QuickExercisesExerciseSlugRoute: typeof QuickExercisesExerciseSlugRoute
   LessonIndexRoute: typeof LessonIndexRoute
   LessonSubjectsSubjectIdRoute: typeof LessonSubjectsSubjectIdRoute
   LessonTopicsTopicIdRoute: typeof LessonTopicsTopicIdRoute
@@ -155,6 +169,13 @@ declare module '@tanstack/react-router' {
       path: '/lesson'
       fullPath: '/lesson'
       preLoaderRoute: typeof LessonIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quick-exercises/$exerciseSlug': {
+      id: '/quick-exercises/$exerciseSlug'
+      path: '/quick-exercises/$exerciseSlug'
+      fullPath: '/quick-exercises/$exerciseSlug'
+      preLoaderRoute: typeof QuickExercisesExerciseSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lesson/quiz': {
@@ -200,6 +221,7 @@ const rootRouteChildren: RootRouteChildren = {
   TextToSpeechRoute: TextToSpeechRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   LessonQuizRoute: LessonQuizRoute,
+  QuickExercisesExerciseSlugRoute: QuickExercisesExerciseSlugRoute,
   LessonIndexRoute: LessonIndexRoute,
   LessonSubjectsSubjectIdRoute: LessonSubjectsSubjectIdRoute,
   LessonTopicsTopicIdRoute: LessonTopicsTopicIdRoute,

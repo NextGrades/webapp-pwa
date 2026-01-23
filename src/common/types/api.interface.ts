@@ -1,7 +1,3 @@
-// types/api.ts
-
-const API_BASE_URL = import.meta.env.VITE_API_DEV_URL;
-
 // Generic success response wrapper
 interface ApiSuccessResponse<T> {
   success: true;
@@ -28,7 +24,7 @@ type AxiosResponseWrapper<T> = { data: ApiResponse<T> };
 
 // Type guard to check if response is successful
 function isApiSuccess<T>(
-  response: ApiResponse<T>
+  response: ApiResponse<T>,
 ): response is ApiSuccessResponse<T> {
   return "success" in response && response.success === true;
 }
@@ -45,4 +41,4 @@ export type {
   AxiosResponseWrapper,
 };
 
-export { isApiSuccess, isApiError, API_BASE_URL };
+export { isApiSuccess, isApiError };
