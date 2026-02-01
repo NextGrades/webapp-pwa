@@ -3,6 +3,14 @@ interface ApiSuccessResponse<T> {
   success: true;
   message: string;
   data: T;
+  meta: PaginationMeta;
+}
+
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
 }
 
 // Error response from NestJS

@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TextToSpeechRouteImport } from './routes/text-to-speech'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TutorIndexRouteImport } from './routes/tutor/index'
 import { Route as LessonIndexRouteImport } from './routes/lesson/index'
+import { Route as ExamModeIndexRouteImport } from './routes/exam-mode/index'
+import { Route as CoursesIndexRouteImport } from './routes/courses/index'
 import { Route as QuickExercisesExerciseSlugRouteImport } from './routes/quick-exercises/$exerciseSlug'
 import { Route as LessonQuizRouteImport } from './routes/lesson/quiz'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
+import { Route as CoursesCourseIdRouteImport } from './routes/courses/$courseId'
 import { Route as LessonSubjectsIndexRouteImport } from './routes/lesson/subjects/index'
+import { Route as ExamModeResultsIndexRouteImport } from './routes/exam-mode/results/index'
 import { Route as LessonTopicsTopicIdRouteImport } from './routes/lesson/topics/$topicId'
 import { Route as LessonSubjectsSubjectIdRouteImport } from './routes/lesson/subjects/$subjectId'
 
@@ -24,14 +30,34 @@ const TextToSpeechRoute = TextToSpeechRouteImport.update({
   path: '/text-to-speech',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TutorIndexRoute = TutorIndexRouteImport.update({
+  id: '/tutor/',
+  path: '/tutor/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LessonIndexRoute = LessonIndexRouteImport.update({
   id: '/lesson/',
   path: '/lesson/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExamModeIndexRoute = ExamModeIndexRouteImport.update({
+  id: '/exam-mode/',
+  path: '/exam-mode/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoursesIndexRoute = CoursesIndexRouteImport.update({
+  id: '/courses/',
+  path: '/courses/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuickExercisesExerciseSlugRoute =
@@ -50,9 +76,19 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
   path: '/demo/tanstack-query',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CoursesCourseIdRoute = CoursesCourseIdRouteImport.update({
+  id: '/courses/$courseId',
+  path: '/courses/$courseId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LessonSubjectsIndexRoute = LessonSubjectsIndexRouteImport.update({
   id: '/lesson/subjects/',
   path: '/lesson/subjects/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExamModeResultsIndexRoute = ExamModeResultsIndexRouteImport.update({
+  id: '/exam-mode/results/',
+  path: '/exam-mode/results/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LessonTopicsTopicIdRoute = LessonTopicsTopicIdRouteImport.update({
@@ -68,83 +104,125 @@ const LessonSubjectsSubjectIdRoute = LessonSubjectsSubjectIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
   '/text-to-speech': typeof TextToSpeechRoute
+  '/courses/$courseId': typeof CoursesCourseIdRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/lesson/quiz': typeof LessonQuizRoute
   '/quick-exercises/$exerciseSlug': typeof QuickExercisesExerciseSlugRoute
+  '/courses': typeof CoursesIndexRoute
+  '/exam-mode': typeof ExamModeIndexRoute
   '/lesson': typeof LessonIndexRoute
+  '/tutor': typeof TutorIndexRoute
   '/lesson/subjects/$subjectId': typeof LessonSubjectsSubjectIdRoute
   '/lesson/topics/$topicId': typeof LessonTopicsTopicIdRoute
+  '/exam-mode/results': typeof ExamModeResultsIndexRoute
   '/lesson/subjects': typeof LessonSubjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
   '/text-to-speech': typeof TextToSpeechRoute
+  '/courses/$courseId': typeof CoursesCourseIdRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/lesson/quiz': typeof LessonQuizRoute
   '/quick-exercises/$exerciseSlug': typeof QuickExercisesExerciseSlugRoute
+  '/courses': typeof CoursesIndexRoute
+  '/exam-mode': typeof ExamModeIndexRoute
   '/lesson': typeof LessonIndexRoute
+  '/tutor': typeof TutorIndexRoute
   '/lesson/subjects/$subjectId': typeof LessonSubjectsSubjectIdRoute
   '/lesson/topics/$topicId': typeof LessonTopicsTopicIdRoute
+  '/exam-mode/results': typeof ExamModeResultsIndexRoute
   '/lesson/subjects': typeof LessonSubjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
   '/text-to-speech': typeof TextToSpeechRoute
+  '/courses/$courseId': typeof CoursesCourseIdRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/lesson/quiz': typeof LessonQuizRoute
   '/quick-exercises/$exerciseSlug': typeof QuickExercisesExerciseSlugRoute
+  '/courses/': typeof CoursesIndexRoute
+  '/exam-mode/': typeof ExamModeIndexRoute
   '/lesson/': typeof LessonIndexRoute
+  '/tutor/': typeof TutorIndexRoute
   '/lesson/subjects/$subjectId': typeof LessonSubjectsSubjectIdRoute
   '/lesson/topics/$topicId': typeof LessonTopicsTopicIdRoute
+  '/exam-mode/results/': typeof ExamModeResultsIndexRoute
   '/lesson/subjects/': typeof LessonSubjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dashboard'
     | '/text-to-speech'
+    | '/courses/$courseId'
     | '/demo/tanstack-query'
     | '/lesson/quiz'
     | '/quick-exercises/$exerciseSlug'
+    | '/courses'
+    | '/exam-mode'
     | '/lesson'
+    | '/tutor'
     | '/lesson/subjects/$subjectId'
     | '/lesson/topics/$topicId'
+    | '/exam-mode/results'
     | '/lesson/subjects'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/dashboard'
     | '/text-to-speech'
+    | '/courses/$courseId'
     | '/demo/tanstack-query'
     | '/lesson/quiz'
     | '/quick-exercises/$exerciseSlug'
+    | '/courses'
+    | '/exam-mode'
     | '/lesson'
+    | '/tutor'
     | '/lesson/subjects/$subjectId'
     | '/lesson/topics/$topicId'
+    | '/exam-mode/results'
     | '/lesson/subjects'
   id:
     | '__root__'
     | '/'
+    | '/dashboard'
     | '/text-to-speech'
+    | '/courses/$courseId'
     | '/demo/tanstack-query'
     | '/lesson/quiz'
     | '/quick-exercises/$exerciseSlug'
+    | '/courses/'
+    | '/exam-mode/'
     | '/lesson/'
+    | '/tutor/'
     | '/lesson/subjects/$subjectId'
     | '/lesson/topics/$topicId'
+    | '/exam-mode/results/'
     | '/lesson/subjects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRoute
   TextToSpeechRoute: typeof TextToSpeechRoute
+  CoursesCourseIdRoute: typeof CoursesCourseIdRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   LessonQuizRoute: typeof LessonQuizRoute
   QuickExercisesExerciseSlugRoute: typeof QuickExercisesExerciseSlugRoute
+  CoursesIndexRoute: typeof CoursesIndexRoute
+  ExamModeIndexRoute: typeof ExamModeIndexRoute
   LessonIndexRoute: typeof LessonIndexRoute
+  TutorIndexRoute: typeof TutorIndexRoute
   LessonSubjectsSubjectIdRoute: typeof LessonSubjectsSubjectIdRoute
   LessonTopicsTopicIdRoute: typeof LessonTopicsTopicIdRoute
+  ExamModeResultsIndexRoute: typeof ExamModeResultsIndexRoute
   LessonSubjectsIndexRoute: typeof LessonSubjectsIndexRoute
 }
 
@@ -157,6 +235,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TextToSpeechRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -164,11 +249,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tutor/': {
+      id: '/tutor/'
+      path: '/tutor'
+      fullPath: '/tutor'
+      preLoaderRoute: typeof TutorIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lesson/': {
       id: '/lesson/'
       path: '/lesson'
       fullPath: '/lesson'
       preLoaderRoute: typeof LessonIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exam-mode/': {
+      id: '/exam-mode/'
+      path: '/exam-mode'
+      fullPath: '/exam-mode'
+      preLoaderRoute: typeof ExamModeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/courses/': {
+      id: '/courses/'
+      path: '/courses'
+      fullPath: '/courses'
+      preLoaderRoute: typeof CoursesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/quick-exercises/$exerciseSlug': {
@@ -192,11 +298,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoTanstackQueryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/courses/$courseId': {
+      id: '/courses/$courseId'
+      path: '/courses/$courseId'
+      fullPath: '/courses/$courseId'
+      preLoaderRoute: typeof CoursesCourseIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lesson/subjects/': {
       id: '/lesson/subjects/'
       path: '/lesson/subjects'
       fullPath: '/lesson/subjects'
       preLoaderRoute: typeof LessonSubjectsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exam-mode/results/': {
+      id: '/exam-mode/results/'
+      path: '/exam-mode/results'
+      fullPath: '/exam-mode/results'
+      preLoaderRoute: typeof ExamModeResultsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lesson/topics/$topicId': {
@@ -218,13 +338,19 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRoute,
   TextToSpeechRoute: TextToSpeechRoute,
+  CoursesCourseIdRoute: CoursesCourseIdRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   LessonQuizRoute: LessonQuizRoute,
   QuickExercisesExerciseSlugRoute: QuickExercisesExerciseSlugRoute,
+  CoursesIndexRoute: CoursesIndexRoute,
+  ExamModeIndexRoute: ExamModeIndexRoute,
   LessonIndexRoute: LessonIndexRoute,
+  TutorIndexRoute: TutorIndexRoute,
   LessonSubjectsSubjectIdRoute: LessonSubjectsSubjectIdRoute,
   LessonTopicsTopicIdRoute: LessonTopicsTopicIdRoute,
+  ExamModeResultsIndexRoute: ExamModeResultsIndexRoute,
   LessonSubjectsIndexRoute: LessonSubjectsIndexRoute,
 }
 export const routeTree = rootRouteImport

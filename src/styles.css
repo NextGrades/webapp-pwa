@@ -1,7 +1,7 @@
 /* =========================
    Google Fonts
    ========================= */
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&family=Courgette&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Lexend:wght@400;500;600;700;800&display=swap");
 
 /* Tailwind */
 @import "tailwindcss";
@@ -11,40 +11,96 @@
    ========================= */
 body {
   font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+}
+
 code {
   font-family: var(--font-mono);
+  line-height: 1.5;
 }
 
 /* =========================
-   Design Tokens
+   Design Tokens (Academic Navy Theme)
    ========================= */
 :root {
-  /* Brand colors */
-  --blue-dark: #22379d;
-  --blue-main: #3654d8;
-  --white-soft: #f1f4f8;
+  /* Primary brand colors */
+  --navy-deep: #22379d;
+  --navy-main: #3654d8;
+  --navy-light: #3b82f6;
 
-  /* Light mode */
-  --background: #ffffff;
+  /* Accent colors */
+  --amber-main: #f59e0b;
+  --amber-dark: #d97706;
+  --amber-light: #fbbf24;
+
+  /* Semantic colors */
+  --success: #059669;
+  --success-light: #10b981;
+  --error: #dc2626;
+  --error-light: #ef4444;
+  --warning: #f59e0b;
+  --info: #3b82f6;
+
+  /* Neutral palette */
+  --background: #fff;
   --foreground: #1f2937;
-
-  /* UI neutrals */
-  --muted: #64748b;
-  --surface: #f5f7fc;
+  --surface: #ffffff;
+  --surface-elevated: #f5f5f4;
+  --border: #e5e7eb;
+  --muted: #6b7280;
+  --muted-light: #9ca3af;
 
   /* Fonts */
   --font-sans:
     "Quicksand", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
 
-  --font-display: "Courgette", cursive;
+  --font-display: "Lexend", "Quicksand", system-ui, sans-serif;
 
   --font-mono:
-    source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+    "JetBrains Mono", "Fira Code", Consolas, Monaco, "Courier New", monospace;
+
+  /* Spacing scale (base unit: 4px) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-xl:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 200ms ease-in-out;
+  --transition-slow: 300ms ease-in-out;
 }
 
 /* =========================
@@ -54,25 +110,177 @@ code {
   /* Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-
-  --color-primary: var(--blue-main);
-  --color-primary-dark: var(--blue-dark);
   --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-border: var(--border);
   --color-muted: var(--muted);
 
+  --color-primary: var(--navy-main);
+  --color-primary-dark: var(--navy-deep);
+  --color-primary-light: var(--navy-light);
+
+  --color-accent: var(--amber-main);
+  --color-accent-dark: var(--amber-dark);
+  --color-accent-light: var(--amber-light);
+
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+
   /* Typography */
+  --font-display: var(--font-display);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
-  --font-display: var(--font-display);
+
+  /* Spacing (extends Tailwind's spacing scale) */
+  --spacing-xs: var(--space-xs);
+  --spacing-sm: var(--space-sm);
+  --spacing-md: var(--space-md);
+  --spacing-lg: var(--space-lg);
+  --spacing-xl: var(--space-xl);
+  --spacing-2xl: var(--space-2xl);
+  --spacing-3xl: var(--space-3xl);
+
+  /* Border Radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
 }
 
 /* =========================
    Custom Utilities
    ========================= */
 @utility container {
-  @apply mx-auto px-2 sm:px-2 lg:px-4;
+  @apply mx-auto px-4 sm:px-6 lg:px-8;
+  max-width: 1200px;
 }
 
 @utility font-display {
   font-family: var(--font-display);
+}
+
+@utility btn-primary {
+  @apply bg-primary text-white px-6 py-3 rounded-lg font-semibold;
+  @apply transition-all duration-200;
+  @apply hover:bg-primary-dark hover:scale-[1.02];
+  @apply active:scale-[0.98];
+}
+
+@utility btn-secondary {
+  @apply bg-transparent border-2 border-primary text-primary px-6 py-3 rounded-lg font-semibold;
+  @apply transition-all duration-200;
+  @apply hover:bg-primary hover:text-white;
+  @apply active:scale-[0.98];
+}
+
+@utility card {
+  @apply bg-surface border border-border rounded-lg p-6;
+  box-shadow: var(--shadow-md);
+  @apply transition-shadow duration-200;
+  @apply hover:shadow-lg;
+}
+
+@utility input-field {
+  @apply h-11 border border-border rounded-lg px-4;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary;
+  @apply transition-all duration-200;
+}
+
+/* =========================
+   Component-Specific Styles
+   ========================= */
+
+/* Course Cards */
+.course-card {
+  @apply card;
+  @apply hover:-translate-y-1;
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+/* Progress Bar */
+.progress-bar {
+  @apply h-2 bg-surface-elevated rounded-full overflow-hidden;
+}
+
+.progress-bar-fill {
+  @apply h-full bg-success rounded-full;
+  transition: width var(--transition-slow);
+}
+
+/* Exam Question Navigation Dots */
+.question-dot {
+  @apply w-3 h-3 rounded-full border-2 border-muted;
+  @apply transition-all duration-200;
+}
+
+.question-dot.active {
+  @apply bg-primary border-primary scale-125;
+}
+
+.question-dot.completed {
+  @apply bg-success border-success;
+}
+
+.question-dot.flagged::after {
+  content: "";
+  @apply absolute -top-1 -right-1 w-2 h-2 bg-warning rounded-full;
+}
+
+/* Chat Bubbles (Mini Tutor) */
+.chat-bubble {
+  @apply max-w-[70%] rounded-lg px-4 py-3;
+  animation: slideIn var(--transition-base);
+}
+
+.chat-bubble.ai {
+  @apply bg-surface-elevated text-foreground;
+  border-bottom-left-radius: 4px;
+}
+
+.chat-bubble.user {
+  @apply bg-primary text-white ml-auto;
+  border-bottom-right-radius: 4px;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Validation Badge */
+.badge-validated {
+  @apply inline-flex items-center gap-1 px-3 py-1 rounded-full;
+  @apply bg-success/10 text-success text-sm font-medium;
+}
+
+/* Loading Skeleton */
+.skeleton {
+  @apply bg-muted/20 rounded;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Focus visible (accessibility) */
+*:focus-visible {
+  outline: 2px solid var(--navy-main);
+  outline-offset: 2px;
 }

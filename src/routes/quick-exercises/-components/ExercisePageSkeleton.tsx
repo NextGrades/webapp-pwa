@@ -1,4 +1,5 @@
-import { Skeleton } from "@/components/Skeleton";
+import Skeleton from "@/components/Skeleton";
+
 
 export function ExercisePageSkeleton() {
   return (
