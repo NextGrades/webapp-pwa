@@ -3,6 +3,7 @@ import type { Message } from "@/routes/tutor";
 import { Download } from "lucide-react";
 
 const RightTutorHeaderDiv = ({ messages }: { messages?: Message }) => {
+  console.log(messages);
   function exportChat(): void {
     throw new Error("Function not implemented.");
   }

@@ -6,7 +6,6 @@ import Card from "@/components/Card";
 import ExitModal from "@/routes/exam-mode/-components/ExitModal";
 import { useModal } from "@/context/ModalContext";
 
-
 export const Route = createFileRoute("/exam-mode/")({
   component: ExamModePage,
 });
@@ -56,6 +55,8 @@ export default function ExamModePage() {
     new Set(),
   );
   const [timeRemaining, setTimeRemaining] = useState(EXAM_DATA.timeLimit * 60);
+
+  console.log(setTimeRemaining);
 
   const question = QUESTIONS[currentQuestion];
 

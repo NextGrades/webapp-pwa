@@ -279,7 +279,13 @@ export default function LandingPage() {
             )}
 
             {isLastSlide ? (
-              <Link to="/courses" className="flex-1">
+              <Link
+                to="/courses"
+                search={{
+                  page: 1,
+                  limit: 10,
+                }}
+                className="flex-1">
                 <Button className="w-full h-12 text-base" size="lg">
                   Proceed
                   <ChevronRight size={20} className="ml-1" />

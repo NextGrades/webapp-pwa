@@ -22,6 +22,7 @@ export const Route = createFileRoute("/courses/")({
   loader: ({ deps: { page, limit } }) =>
     courseClient.getCourseSummary(page, limit),
   component: CourseLibraryPage,
+  pendingComponent: CourseCardSkeleton,
 });
 
 const FACULTIES = [
@@ -41,7 +42,7 @@ export default function CourseLibraryPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFaculty, setSelectedFaculty] = useState("All");
   const [showFilters, setShowFilters] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   const COURSES = courseSummary.data;
 
@@ -116,7 +117,7 @@ export default function CourseLibraryPage() {
         <div className="flex gap-8">
           {/* Sidebar Filters */}
           {hasAnyCourses && (
-            <aside className="hidden lg:block w-64 flex-shrink-0">
+            <aside className="hidden lg:block w-64 shrink-0">
               <div className="bg-surface border border-border rounded-lg p-6 sticky top-24">
                 <h3 className="text-lg font-display font-semibold text-foreground mb-4">
                   Filter by Faculty
@@ -177,7 +178,7 @@ export default function CourseLibraryPage() {
           {/* Main Content */}
           <div className="flex-1">
             {/* TRUE EMPTY STATE */}
-            {!isLoading && !hasAnyCourses && (
+            {!hasAnyCourses && (
               <div className="text-center py-20">
                 <div className="w-24 h-24 bg-muted/10 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Search className="text-muted" size={48} />
@@ -218,13 +219,7 @@ export default function CourseLibraryPage() {
                   )}
                 </div>
 
-                {isLoading ? (
-                  <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {[1, 2, 3, 4, 5, 6].map((i) => (
-                      <CourseCardSkeleton key={i} />
-                    ))}
-                  </div>
-                ) : filteredCourses.length > 0 ? (
+                {filteredCourses.length > 0 ? (
                   <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
                     {filteredCourses.map((course) => (
                       <CourseCard
