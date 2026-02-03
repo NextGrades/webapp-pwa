@@ -1,39 +1,64 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { RefreshCcw } from "lucide-react";
 import { useRegisterSW } from "virtual:pwa-register/react";
 
 const EXIT_ANIMATION_MS = 300;
 const FORCE_UPDATE = import.meta.env.VITE_FORCE_UPDATE === "true";
 
+// How often to poll for a new SW (1 hour in prod, can lower for testing)
+const POLL_INTERVAL_MS = 60 * 60 * 1000;
+
 export default function UpdateToast() {
   const {
     needRefresh: [needRefresh],
-    // offlineReady: [offlineReady],
     updateServiceWorker,
-  } = useRegisterSW();
+  } = useRegisterSW({
+    // This is the missing piece. Without it, an installed PWA on Android
+    // has no navigation event to trigger the browser's built-in SW check.
+    onRegisteredSW(swUrl, r) {
+      if (!r) return;
+
+      // Also check immediately on registration — catches the case where
+      // the SW updated while the app was in the background.
+      r.update();
+
+      // Then poll periodically.
+      setInterval(async () => {
+        if (r.installing || !navigator) return;
+        if ("connection" in navigator && !navigator.onLine) return;
+
+        // Fetch the SW script directly with no-cache to see if it changed.
+        // Only call r.update() if the server actually responded — avoids
+        // issues if the server is down or the user goes offline mid-check.
+        const resp = await fetch(swUrl, {
+          cache: "no-store",
+          headers: {
+            cache: "no-store",
+            "cache-control": "no-cache",
+          },
+        });
+
+        if (resp?.status === 200) {
+          await r.update();
+        }
+      }, POLL_INTERVAL_MS);
+    },
+  });
 
   const [show, setShow] = useState(false);
   const [visible, setVisible] = useState(false);
+  const hasShownRef = useRef(false);
 
-  // Show as soon as SW is waiting
-  // Show modal when update is available (once per session)
   useEffect(() => {
     if (!needRefresh) return;
-    if (sessionStorage.getItem("pwa-update-dismissed")) return;
+    if (hasShownRef.current) return;
+    if (!FORCE_UPDATE && sessionStorage.getItem("pwa-update-dismissed")) return;
 
+    hasShownRef.current = true;
     setShow(true);
     requestAnimationFrame(() => setVisible(true));
   }, [needRefresh]);
-  // useEffect(() => {
-  //   if (!needRefresh) return;
 
-  //   if (!FORCE_UPDATE && sessionStorage.getItem("pwa-update-dismissed")) return;
-
-  //   setShow(true);
-  //   requestAnimationFrame(() => setVisible(true));
-  // }, [needRefresh]);
-
-  // Lock background scroll
   useEffect(() => {
     if (!show) return;
     document.body.style.overflow = "hidden";
@@ -44,7 +69,6 @@ export default function UpdateToast() {
 
   const dismiss = () => {
     if (FORCE_UPDATE) return;
-
     sessionStorage.setItem("pwa-update-dismissed", "1");
     setVisible(false);
     setTimeout(() => setShow(false), EXIT_ANIMATION_MS);
@@ -52,7 +76,7 @@ export default function UpdateToast() {
 
   const refresh = async () => {
     await updateServiceWorker(true);
-    setTimeout(() => window.location.reload(), 100);
+    setTimeout(() => window.location.reload(), 150);
   };
 
   if (!show) return null;
@@ -79,7 +103,6 @@ export default function UpdateToast() {
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
             <RefreshCcw size={22} />
           </div>
-
           <div>
             <h2 className="text-base font-semibold text-foreground">
               Update available
@@ -99,7 +122,6 @@ export default function UpdateToast() {
             className="w-full rounded-lg bg-primary px-4 py-3 text-sm font-medium text-white hover:bg-primary-dark transition">
             Refresh now
           </button>
-
           {!FORCE_UPDATE && (
             <button
               onClick={dismiss}

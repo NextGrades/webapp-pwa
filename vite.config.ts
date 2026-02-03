@@ -28,7 +28,7 @@ export default defineConfig({
       strategies: "injectManifest",
       srcDir: "./src",
       filename: "sw.ts",
-      registerType: "prompt",
+      registerType: "autoUpdate",
       injectRegister: "auto",
       devOptions: {
         enabled: true,
@@ -64,7 +64,7 @@ export default defineConfig({
 
       workbox: {
         cleanupOutdatedCaches: true,
-        // clientsClaim: true,
+        clientsClaim: true,
 
         runtimeCaching: [
           // SPA navigation (TanStack Router)

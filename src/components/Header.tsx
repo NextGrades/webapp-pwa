@@ -110,7 +110,7 @@ export default function Header({ center, right }: HeaderProps) {
         <nav className="flex-1 p-3 sm:p-4 overflow-y-auto">
           {/* Home Link */}
           <Link
-            to="/"
+            to="/dashboard"
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 p-2.5 sm:p-3 rounded-xl hover:bg-gray-50 transition-colors mb-2"
             activeProps={activeLinkStyles}>
