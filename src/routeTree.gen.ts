@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TextToSpeechRouteImport } from './routes/text-to-speech'
 import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as NewRouteImport } from './routes/new'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TutorIndexRouteImport } from './routes/tutor/index'
@@ -29,6 +30,11 @@ const TextToSpeechRoute = TextToSpeechRouteImport.update({
 const NotificationsRoute = NotificationsRouteImport.update({
   id: '/notifications',
   path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewRoute = NewRouteImport.update({
+  id: '/new',
+  path: '/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -81,6 +87,7 @@ const ExamModeResultsIndexRoute = ExamModeResultsIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/new': typeof NewRoute
   '/notifications': typeof NotificationsRoute
   '/text-to-speech': typeof TextToSpeechRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/new': typeof NewRoute
   '/notifications': typeof NotificationsRoute
   '/text-to-speech': typeof TextToSpeechRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
@@ -108,6 +116,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/new': typeof NewRoute
   '/notifications': typeof NotificationsRoute
   '/text-to-speech': typeof TextToSpeechRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
@@ -123,6 +132,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/new'
     | '/notifications'
     | '/text-to-speech'
     | '/courses/$courseId'
@@ -136,6 +146,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/dashboard'
+    | '/new'
     | '/notifications'
     | '/text-to-speech'
     | '/courses/$courseId'
@@ -149,6 +160,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/dashboard'
+    | '/new'
     | '/notifications'
     | '/text-to-speech'
     | '/courses/$courseId'
@@ -163,6 +175,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
+  NewRoute: typeof NewRoute
   NotificationsRoute: typeof NotificationsRoute
   TextToSpeechRoute: typeof TextToSpeechRoute
   CoursesCourseIdRoute: typeof CoursesCourseIdRoute
@@ -188,6 +201,13 @@ declare module '@tanstack/react-router' {
       path: '/notifications'
       fullPath: '/notifications'
       preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/new': {
+      id: '/new'
+      path: '/new'
+      fullPath: '/new'
+      preLoaderRoute: typeof NewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -259,6 +279,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
+  NewRoute: NewRoute,
   NotificationsRoute: NotificationsRoute,
   TextToSpeechRoute: TextToSpeechRoute,
   CoursesCourseIdRoute: CoursesCourseIdRoute,

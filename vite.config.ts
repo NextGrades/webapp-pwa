@@ -64,7 +64,7 @@ export default defineConfig({
 
       workbox: {
         cleanupOutdatedCaches: true,
-        clientsClaim: true,
+        // clientsClaim: true,
 
         runtimeCaching: [
           // SPA navigation (TanStack Router)
