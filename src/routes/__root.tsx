@@ -12,6 +12,8 @@ import type { QueryClient } from "@tanstack/react-query";
 import { ModalProvider } from "@/context/ModalContext";
 import Header from "@/components/Header";
 import type { HeaderConfig } from "@/common/types/header";
+import UnifiedInstallPrompt from "@/components/InstallPrompt";
+import UpdateToast from "@/components/UpdateToast";
 
 declare module "@tanstack/react-router" {
   interface StaticDataRouteOption {
@@ -41,6 +43,9 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
             <Header center={headerDivs?.center} right={headerDivs?.right} />
           )}
           <Outlet />
+
+          <UnifiedInstallPrompt />
+          <UpdateToast />
 
           <TanStackDevtools
             config={{ position: "bottom-right" }}

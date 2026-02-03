@@ -31,7 +31,7 @@ export const curriculumClient = {
         userId: input.userId,
         classLevel: input.classLevel,
         threadId: input.threadId,
-      }
+      },
     );
 
     return res.data;

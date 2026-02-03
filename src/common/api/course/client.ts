@@ -4,7 +4,6 @@ import {
   isApiError,
   isApiSuccess,
   type ApiResponse,
-  type ApiSuccessResponse,
 } from "@/common/types/api.interface";
 import type {
   CourseData,
@@ -15,7 +14,7 @@ import type {
 } from "@/common/types/course.types";
 import type { QuickExerciseData } from "@/common/types/exercise.type";
 
-function unwrapApiResponse<T>(body: ApiResponse<T>): ApiSuccessResponse<T> {
+function unwrapApiResponse<T>(body: ApiResponse<T>): ApiResponse<T> {
   if (isApiSuccess(body)) {
     return body;
   }
@@ -31,7 +30,7 @@ export const courseClient = {
   async generateTeachingContent(input: {
     topicId: string;
     userId: string;
-  }): Promise<ApiSuccessResponse<GenerateTeachingResponse>> {
+  }): Promise<ApiResponse<GenerateTeachingResponse>> {
     const res = await api.post<ApiResponse<GenerateTeachingResponse>>(
       "/agent/teach",
       input,
@@ -40,9 +39,7 @@ export const courseClient = {
     return unwrapApiResponse(res.data);
   },
 
-  async getJobData(
-    jobId: string,
-  ): Promise<ApiSuccessResponse<CourseTutorResponse>> {
+  async getJobData(jobId: string): Promise<ApiResponse<CourseTutorResponse>> {
     const res = await api.get<ApiResponse<CourseTutorResponse>>(
       `/agent/exercise-queue/${jobId}`,
     );
@@ -54,7 +51,7 @@ export const courseClient = {
     question: string;
     conversationId: string;
     userId: string;
-  }): Promise<ApiSuccessResponse<FollowUpAIResponse>> {
+  }): Promise<ApiResponse<FollowUpAIResponse>> {
     const res = await api.post<ApiResponse<FollowUpAIResponse>>(
       "/agent/ask",
       input,
@@ -65,7 +62,7 @@ export const courseClient = {
   async getCourseSummary(
     page: number,
     limit: number,
-  ): Promise<ApiSuccessResponse<CourseSummary[]>> {
+  ): Promise<ApiResponse<CourseSummary[]>> {
     const res = await api.get<ApiResponse<CourseSummary[]>>(
       "/academics/courses",
       {
@@ -76,7 +73,7 @@ export const courseClient = {
     return unwrapApiResponse(res.data);
   },
 
-  async getCourseDetails(id: string): Promise<ApiSuccessResponse<CourseData>> {
+  async getCourseDetails(id: string): Promise<ApiResponse<CourseData>> {
     const res = await api.get<ApiResponse<CourseData>>(
       `/academics/courses/id/${id}`,
     );
@@ -90,7 +87,7 @@ export const courseClient = {
     userId: string;
     classLevel: number;
     threadId?: string;
-  }): Promise<ApiSuccessResponse<QuickExerciseData>> {
+  }): Promise<ApiResponse<QuickExerciseData>> {
     const res = await api.post<ApiResponse<QuickExerciseData>>(
       "/agent/exercise/quick",
       input,

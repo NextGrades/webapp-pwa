@@ -16,43 +16,64 @@ export default function Header({ center, right }: HeaderProps) {
       "flex items-center gap-3 p-3 mb-2 rounded-xl transition-colors bg-primary text-white",
   };
 
+  // Determine layout class based on what content is present
+  const getLayoutClass = () => {
+    if (center && right) {
+      // Three-column layout: left | center | right
+      return "grid grid-cols-[auto_1fr_auto] gap-2 sm:gap-4";
+    } else if (center) {
+      // Two-column layout: left | center (right empty)
+      return "grid grid-cols-[auto_1fr] gap-2 sm:gap-4";
+    } else if (right) {
+      // Two-column layout: left flexes, right at end
+      return "flex justify-between gap-2 sm:gap-4";
+    }
+    // Just left content
+    return "flex";
+  };
+
   return (
     <>
       {/* Top Navigation Bar */}
       <header
         className="py-2 sm:py-3 shadow-sm border-b sticky top-0 z-40 bg-white"
         style={{ borderColor: "var(--white-soft)" }}>
-        <div className="container flex items-center px-3 sm:px-4">
-          {/* LEFT */}
-          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+        <div
+          className={`container px-3 sm:px-4 items-center ${getLayoutClass()}`}>
+          {/* LEFT - Always visible */}
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0 min-w-0">
             <button
               onClick={() => setIsOpen(true)}
-              className="p-1.5 sm:p-2 rounded-lg transition-colors hover:bg-gray-100"
+              className="p-1.5 sm:p-2 rounded-lg transition-colors hover:bg-gray-100 shrink-0"
               aria-label="Open menu">
               <Menu size={20} className="sm:w-6 sm:h-6" />
             </button>
 
-            <Link to="/" className="flex items-center gap-1.5 sm:gap-2">
+            <Link to="/" className="flex items-center gap-1.5 sm:gap-2 min-w-0">
               <img
                 src="/web-app-manifest-192x192.png"
                 alt="NextGrades Logo"
-                className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg object-contain"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg object-contain shrink-0"
               />
-              <span className="text-lg sm:text-xl font-bold tracking-tight">
+              <span className="text-lg sm:text-xl font-bold tracking-tight truncate">
                 NextGrades
               </span>
             </Link>
           </div>
 
-          {/* CENTER SLOT */}
-          <div className="flex-1 flex justify-center px-2 sm:px-4 min-w-0">
-            {center}
-          </div>
+          {/* CENTER SLOT - Conditionally rendered with proper flex handling */}
+          {center && (
+            <div className="flex justify-center items-center min-w-0 overflow-hidden">
+              {center}
+            </div>
+          )}
 
-          {/* RIGHT SLOT */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            {right}
-          </div>
+          {/* RIGHT SLOT - Conditionally rendered */}
+          {right && (
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0 justify-end">
+              {right}
+            </div>
+          )}
         </div>
       </header>
 
@@ -70,7 +91,7 @@ export default function Header({ center, right }: HeaderProps) {
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}>
         <div
-          className="flex items-center justify-between p-4 sm:p-5 border-b"
+          className="flex items-center justify-between p-4 sm:p-5 border-b shrink-0"
           style={{ borderColor: "var(--white-soft)" }}>
           <img
             src="/web-app-manifest-192x192.png"
@@ -93,7 +114,7 @@ export default function Header({ center, right }: HeaderProps) {
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 p-2.5 sm:p-3 rounded-xl hover:bg-gray-50 transition-colors mb-2"
             activeProps={activeLinkStyles}>
-            <Home size={18} className="sm:w-5 sm:h-5" />
+            <Home size={18} className="sm:w-5 sm:h-5 shrink-0" />
             <span className="font-semibold text-sm sm:text-base">
               Dashboard
             </span>
@@ -101,11 +122,15 @@ export default function Header({ center, right }: HeaderProps) {
 
           {/* Subjects Link */}
           <Link
-            to="/lesson/subjects"
+            to="/courses"
+            search={{
+              page: 1,
+              limit: 10,
+            }}
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 p-2.5 sm:p-3 rounded-xl hover:bg-gray-50 transition-colors mb-2"
             activeProps={activeLinkStyles}>
-            <BookOpen size={18} className="sm:w-5 sm:h-5" />
+            <BookOpen size={18} className="sm:w-5 sm:h-5 shrink-0" />
             <span className="font-semibold text-sm sm:text-base">Courses</span>
           </Link>
 
@@ -117,7 +142,7 @@ export default function Header({ center, right }: HeaderProps) {
 
         {/* Optional Footer Section in Sidebar */}
         <div
-          className="p-3 sm:p-4 bg-gray-50 border-t"
+          className="p-3 sm:p-4 bg-gray-50 border-t shrink-0"
           style={{ backgroundColor: "var(--surface)" }}>
           <p className="text-xs text-center" style={{ color: "var(--muted)" }}>
             © 2024 Learning App

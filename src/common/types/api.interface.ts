@@ -1,10 +1,4 @@
-// Generic success response wrapper
-interface ApiSuccessResponse<T> {
-  success: true;
-  message: string;
-  data: T;
-  meta: PaginationMeta;
-}
+/* ---------------- PAGINATION META ---------------- */
 
 export interface PaginationMeta {
   page: number;
@@ -13,40 +7,39 @@ export interface PaginationMeta {
   totalPages: number;
 }
 
-// Error response from NestJS
-interface ApiErrorResponse {
-  statusCode: number;
-  timestamp: string;
-  path: string;
-  response: {
-    message: string | string[];
-    error: string;
-    statusCode: number;
+/* ---------------- CANONICAL API RESPONSE ---------------- */
+
+export interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+  meta?: PaginationMeta;
+  error?: {
+    code: string;
+    details?: unknown;
   };
 }
 
-// Union type for API responses
-type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;
+/* ---------------- AXIOS WRAPPER ---------------- */
 
-type AxiosResponseWrapper<T> = { data: ApiResponse<T> };
-
-// Type guard to check if response is successful
-function isApiSuccess<T>(
-  response: ApiResponse<T>,
-): response is ApiSuccessResponse<T> {
-  return "success" in response && response.success === true;
-}
-
-// Type guard to check if response is an error
-function isApiError<T>(response: ApiResponse<T>): response is ApiErrorResponse {
-  return "statusCode" in response && "response" in response;
-}
-
-export type {
-  ApiSuccessResponse,
-  ApiErrorResponse,
-  ApiResponse,
-  AxiosResponseWrapper,
+export type AxiosResponseWrapper<T> = {
+  data: ApiResponse<T>;
 };
 
-export { isApiSuccess, isApiError };
+/* ---------------- TYPE GUARDS ---------------- */
+
+export function isApiSuccess<T>(
+  response: ApiResponse<T>,
+): response is ApiResponse<T> & { success: true; data: T } {
+  return response.success === true;
+}
+
+export function isApiError<T>(
+  response: ApiResponse<T>,
+): response is ApiResponse<T> & {
+  success: false;
+  data: null;
+  error: { code: string; details?: unknown };
+} {
+  return response.success === false;
+}

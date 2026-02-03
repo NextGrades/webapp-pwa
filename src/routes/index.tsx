@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import { ChevronRight, GraduationCap, CheckCircle, Target } from "lucide-react";
 import Button from "../components/Button";
 import { Link } from "@tanstack/react-router";
-import UnifiedInstallPrompt from "@/components/InstallPrompt";
+
 
 export const Route = createFileRoute("/")({
   staticData: {
@@ -309,8 +309,6 @@ export default function LandingPage() {
         <p className="text-center text-xs text-muted font-medium">
           © 2025 NextGrades • AI-Powered Exam Prep
         </p>
-
-        <UnifiedInstallPrompt />
       </div>
 
       <style>{`

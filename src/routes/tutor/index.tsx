@@ -17,6 +17,7 @@ import type {
   CourseTutorResponse,
   FollowUpAIResponse,
 } from "@/common/types/course.types";
+import { GenericErrorComponent } from "@/components/GenericErrorComponent";
 
 // ─── Route ────────────────────────────────────────────────────────────────
 
@@ -46,7 +47,7 @@ export interface Message {
   timestamp: Date;
 }
 
-type SessionPhase = "loading" | "teaching" | "chat";
+type SessionPhase = "loading" | "teaching" | "chat" | "error";
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
@@ -93,6 +94,10 @@ function MiniTutorPage() {
     onSuccess: (res) => {
       setConversationId(res.data.conversationId);
     },
+    onError: (error) => {
+      console.log(error);
+      setPhase("error");
+    },
   });
 
   const jobId = generateTeachingMutation.data?.data.jobId;
@@ -123,10 +128,18 @@ function MiniTutorPage() {
     },
   });
 
+  // ─── React to job query errors ──────────────────────────────────────────
+  // FIX: Move error handling to useEffect to prevent render-time state updates
+  useEffect(() => {
+    if (jobQuery.isError) {
+      setPhase("error");
+    }
+  }, [jobQuery.isError]);
+
   // ─── React to job completion ────────────────────────────────────────────
 
   useEffect(() => {
-    if (!jobQuery.data?.data) return;
+    if (!jobQuery.data?.data.courseTitle) return;
 
     const lesson = jobQuery.data.data;
 
@@ -228,9 +241,12 @@ function MiniTutorPage() {
     sendMessage(input);
   };
 
-  const handleQuickAction = (action: string) => {
-    sendMessage(action);
-  };
+  const handleQuickAction = useCallback(
+    (action: string) => {
+      sendMessage(action);
+    },
+    [sendMessage],
+  );
 
   // ─── Render ──────────────────────────────────────────────────────────────
 
@@ -240,6 +256,19 @@ function MiniTutorPage() {
         <div className="container max-w-4xl py-6">
           <div className="space-y-4">
             {phase === "loading" && <LoadingState topic={topic} />}
+            {phase === "error" && generateTeachingMutation.isError && (
+              <GenericErrorComponent
+                error={generateTeachingMutation.error}
+                onRetry={() => generateTeachingMutation.mutate()}
+              />
+            )}
+
+            {phase === "error" && jobQuery.isError && (
+              <GenericErrorComponent
+                error={jobQuery.error}
+                onRetry={() => jobQuery.refetch()}
+              />
+            )}
 
             {messages.map((message) => (
               <MessageBubble key={message.id} message={message} />
@@ -321,7 +350,7 @@ function MiniTutorPage() {
             <Button
               type="submit"
               disabled={!input.trim() || isInputLocked || isTyping}
-              size="lg">
+              size="md">
               <Send size={20} />
             </Button>
           </form>

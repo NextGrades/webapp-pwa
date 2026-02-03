@@ -25,10 +25,13 @@ export default defineConfig({
 
     // ✅ PWA (safe at the end)
     VitePWA({
-      registerType: "autoUpdate",
+      strategies: "injectManifest",
+      srcDir: "./src",
+      filename: "sw.ts",
+      registerType: "prompt",
       injectRegister: "auto",
-       devOptions: {
-        enabled: true
+      devOptions: {
+        enabled: true,
       },
 
       manifest: {
@@ -80,8 +83,7 @@ export default defineConfig({
 
           // Images
           {
-            urlPattern: ({ request }) =>
-              request.destination === "image",
+            urlPattern: ({ request }) => request.destination === "image",
             handler: "CacheFirst",
           },
         ],

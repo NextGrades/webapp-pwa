@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
-import 'katex/dist/katex.min.css';
+import "katex/dist/katex.min.css";
 
 import * as TanStackQueryProvider from "./integrations/tanstack-query/root-provider.tsx";
 
@@ -11,16 +11,16 @@ import { routeTree } from "./routeTree.gen";
 import "./styles.css";
 import reportWebVitals from "./reportWebVitals.ts";
 
-import { registerSW } from "virtual:pwa-register";
+// import { registerSW } from "virtual:pwa-register";
 
-registerSW({
-  onOfflineReady() {
-    console.log("NextGrades is ready for offline use");
-  },
-  onNeedRefresh() {
-    console.log("New version available");
-  },
-});
+// registerSW({
+//   onOfflineReady() {
+//     console.log("NextGrades is ready for offline use");
+//   },
+//   onNeedRefresh() {
+//     console.log("New version available");
+//   },
+// });
 
 // Create a new router instance
 
@@ -52,7 +52,7 @@ if (rootElement && !rootElement.innerHTML) {
       <TanStackQueryProvider.Provider {...TanStackQueryProviderContext}>
         <RouterProvider router={router} />
       </TanStackQueryProvider.Provider>
-    </StrictMode>
+    </StrictMode>,
   );
 }
 
