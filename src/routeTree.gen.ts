@@ -14,9 +14,9 @@ import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as NewRouteImport } from './routes/new'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TutorIndexRouteImport } from './routes/tutor/index'
 import { Route as ExamModeIndexRouteImport } from './routes/exam-mode/index'
 import { Route as CoursesIndexRouteImport } from './routes/courses/index'
+import { Route as TutorTopicIdRouteImport } from './routes/tutor/$topicId'
 import { Route as QuickExercisesExerciseSlugRouteImport } from './routes/quick-exercises/$exerciseSlug'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as CoursesCourseIdRouteImport } from './routes/courses/$courseId'
@@ -47,11 +47,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TutorIndexRoute = TutorIndexRouteImport.update({
-  id: '/tutor/',
-  path: '/tutor/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ExamModeIndexRoute = ExamModeIndexRouteImport.update({
   id: '/exam-mode/',
   path: '/exam-mode/',
@@ -60,6 +55,11 @@ const ExamModeIndexRoute = ExamModeIndexRouteImport.update({
 const CoursesIndexRoute = CoursesIndexRouteImport.update({
   id: '/courses/',
   path: '/courses/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TutorTopicIdRoute = TutorTopicIdRouteImport.update({
+  id: '/tutor/$topicId',
+  path: '/tutor/$topicId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuickExercisesExerciseSlugRoute =
@@ -93,9 +93,9 @@ export interface FileRoutesByFullPath {
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/quick-exercises/$exerciseSlug': typeof QuickExercisesExerciseSlugRoute
+  '/tutor/$topicId': typeof TutorTopicIdRoute
   '/courses': typeof CoursesIndexRoute
   '/exam-mode': typeof ExamModeIndexRoute
-  '/tutor': typeof TutorIndexRoute
   '/exam-mode/results': typeof ExamModeResultsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -107,9 +107,9 @@ export interface FileRoutesByTo {
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/quick-exercises/$exerciseSlug': typeof QuickExercisesExerciseSlugRoute
+  '/tutor/$topicId': typeof TutorTopicIdRoute
   '/courses': typeof CoursesIndexRoute
   '/exam-mode': typeof ExamModeIndexRoute
-  '/tutor': typeof TutorIndexRoute
   '/exam-mode/results': typeof ExamModeResultsIndexRoute
 }
 export interface FileRoutesById {
@@ -122,9 +122,9 @@ export interface FileRoutesById {
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/quick-exercises/$exerciseSlug': typeof QuickExercisesExerciseSlugRoute
+  '/tutor/$topicId': typeof TutorTopicIdRoute
   '/courses/': typeof CoursesIndexRoute
   '/exam-mode/': typeof ExamModeIndexRoute
-  '/tutor/': typeof TutorIndexRoute
   '/exam-mode/results/': typeof ExamModeResultsIndexRoute
 }
 export interface FileRouteTypes {
@@ -138,9 +138,9 @@ export interface FileRouteTypes {
     | '/courses/$courseId'
     | '/demo/tanstack-query'
     | '/quick-exercises/$exerciseSlug'
+    | '/tutor/$topicId'
     | '/courses'
     | '/exam-mode'
-    | '/tutor'
     | '/exam-mode/results'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -152,9 +152,9 @@ export interface FileRouteTypes {
     | '/courses/$courseId'
     | '/demo/tanstack-query'
     | '/quick-exercises/$exerciseSlug'
+    | '/tutor/$topicId'
     | '/courses'
     | '/exam-mode'
-    | '/tutor'
     | '/exam-mode/results'
   id:
     | '__root__'
@@ -166,9 +166,9 @@ export interface FileRouteTypes {
     | '/courses/$courseId'
     | '/demo/tanstack-query'
     | '/quick-exercises/$exerciseSlug'
+    | '/tutor/$topicId'
     | '/courses/'
     | '/exam-mode/'
-    | '/tutor/'
     | '/exam-mode/results/'
   fileRoutesById: FileRoutesById
 }
@@ -181,9 +181,9 @@ export interface RootRouteChildren {
   CoursesCourseIdRoute: typeof CoursesCourseIdRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   QuickExercisesExerciseSlugRoute: typeof QuickExercisesExerciseSlugRoute
+  TutorTopicIdRoute: typeof TutorTopicIdRoute
   CoursesIndexRoute: typeof CoursesIndexRoute
   ExamModeIndexRoute: typeof ExamModeIndexRoute
-  TutorIndexRoute: typeof TutorIndexRoute
   ExamModeResultsIndexRoute: typeof ExamModeResultsIndexRoute
 }
 
@@ -224,13 +224,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tutor/': {
-      id: '/tutor/'
-      path: '/tutor'
-      fullPath: '/tutor'
-      preLoaderRoute: typeof TutorIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/exam-mode/': {
       id: '/exam-mode/'
       path: '/exam-mode'
@@ -243,6 +236,13 @@ declare module '@tanstack/react-router' {
       path: '/courses'
       fullPath: '/courses'
       preLoaderRoute: typeof CoursesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tutor/$topicId': {
+      id: '/tutor/$topicId'
+      path: '/tutor/$topicId'
+      fullPath: '/tutor/$topicId'
+      preLoaderRoute: typeof TutorTopicIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/quick-exercises/$exerciseSlug': {
@@ -285,9 +285,9 @@ const rootRouteChildren: RootRouteChildren = {
   CoursesCourseIdRoute: CoursesCourseIdRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   QuickExercisesExerciseSlugRoute: QuickExercisesExerciseSlugRoute,
+  TutorTopicIdRoute: TutorTopicIdRoute,
   CoursesIndexRoute: CoursesIndexRoute,
   ExamModeIndexRoute: ExamModeIndexRoute,
-  TutorIndexRoute: TutorIndexRoute,
   ExamModeResultsIndexRoute: ExamModeResultsIndexRoute,
 }
 export const routeTree = rootRouteImport

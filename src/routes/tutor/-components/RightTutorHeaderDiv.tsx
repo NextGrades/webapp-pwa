@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import type { Message } from "@/routes/tutor";
+import type { Message } from "@/routes/tutor/$topicId";
 import { Download } from "lucide-react";
 
 const RightTutorHeaderDiv = ({ messages }: { messages?: Message }) => {

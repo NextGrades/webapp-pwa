@@ -21,7 +21,7 @@ import { GenericErrorComponent } from "@/components/GenericErrorComponent";
 
 // ─── Route ────────────────────────────────────────────────────────────────
 
-export const Route = createFileRoute("/tutor/")({
+export const Route = createFileRoute("/tutor/$topicId")({
   staticData: {
     header: {
       right: <RightTutorHeaderDiv />,
@@ -51,27 +51,28 @@ type SessionPhase = "loading" | "teaching" | "chat" | "error";
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
-function generateFollowUps(data: CourseTutorResponse): string[] {
-  const pills: string[] = [];
+// function generateFollowUps(data: CourseTutorResponse): string[] {
+//   const pills: string[] = [];
 
-  pills.push("Can you explain that in simpler terms?");
+//   pills.push("Can you explain that in simpler terms?");
 
-  if (data.workedExamples?.length > 0) {
-    pills.push("Walk me through the first example step by step");
-  }
+//   if (data.workedExamples?.length > 0) {
+//     pills.push("Walk me through the first example step by step");
+//   }
 
-  if (data.keyConcepts?.length > 0) {
-    pills.push("Which of these concepts is the hardest to master?");
-  }
+//   if (data.keyConcepts?.length > 0) {
+//     pills.push("Which of these concepts is the hardest to master?");
+//   }
 
-  pills.push(`Quiz me on ${data.topic}`);
+//   pills.push(`Quiz me on ${data.topic}`);
 
-  return pills;
-}
+//   return pills;
+// }
 
 // ─── Page ──────────────────────────────────────────────────────────────────
 
 function MiniTutorPage() {
+  const { topicId } = Route.useParams();
   const [messages, setMessages] = useState<Message[]>([]);
   const [topic, setTopic] = useState("");
   const [input, setInput] = useState("");
@@ -88,7 +89,7 @@ function MiniTutorPage() {
   const generateTeachingMutation = useMutation({
     mutationFn: () =>
       courseClient.generateTeachingContent({
-        topicId: "64f572ac-03e3-42d2-b81e-0baf063738b7",
+        topicId: topicId,
         userId: "dummy-user-id",
       }),
     onSuccess: (res) => {
@@ -153,7 +154,8 @@ function MiniTutorPage() {
     ]);
 
     setTopic(lesson.topic);
-    setFollowUps(generateFollowUps(lesson));
+    setFollowUps(lesson.followUpQuestions);
+    // setFollowUps(generateFollowUps(lesson));
     setPhase("teaching");
   }, [jobQuery.data?.data]);
 
@@ -248,6 +250,13 @@ function MiniTutorPage() {
     [sendMessage],
   );
 
+  const lastUserMessageContent = messages
+    .filter(
+      (m): m is Message & { content: string } =>
+        m.role === "user" && !!m.content,
+    )
+    .at(-1)?.content;
+
   // ─── Render ──────────────────────────────────────────────────────────────
 
   return (
@@ -273,6 +282,17 @@ function MiniTutorPage() {
             {messages.map((message) => (
               <MessageBubble key={message.id} message={message} />
             ))}
+
+            {followUpMutation.isError && (
+              <GenericErrorComponent
+                error={followUpMutation.error}
+                onRetry={() => {
+                  if (lastUserMessageContent) {
+                    followUpMutation.mutate(lastUserMessageContent);
+                  }
+                }}
+              />
+            )}
 
             {/* Typing indicator */}
             {isTyping && (

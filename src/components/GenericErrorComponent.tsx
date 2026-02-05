@@ -37,11 +37,11 @@ export function GenericErrorComponent({ error, onRetry }: GenericErrorProps) {
   if (error instanceof Error) {
     return (
       <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-        <h2 className="text-lg font-semibold text-gray-800">
+        <h2 className="text-lg font-semibold text-red-700">
           Something went wrong
         </h2>
 
-        <p className="mt-2 text-sm text-gray-600">{error.message}</p>
+        <p className="mt-2 text-sm text-red-600">{error.message}</p>
 
         {onRetry && (
           <button
@@ -57,8 +57,8 @@ export function GenericErrorComponent({ error, onRetry }: GenericErrorProps) {
   /* ---------------- UNKNOWN ---------------- */
   return (
     <div className="rounded-lg border p-4">
-      <h2 className="text-lg font-semibold">Unexpected error</h2>
-      <p className="text-sm text-gray-600">An unknown error occurred.</p>
+      <h2 className="text-lg font-semibold text-red-700">Unexpected error</h2>
+      <p className="text-sm text-red-600">An unknown error occurred.</p>
 
       {onRetry && (
         <button

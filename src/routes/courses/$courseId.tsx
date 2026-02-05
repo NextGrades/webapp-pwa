@@ -1,8 +1,13 @@
+import { GenericErrorComponent } from "@/components/GenericErrorComponent";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/courses/$courseId")({
   loader: ({ params: { courseId } }) => courseClient.getCourseDetails(courseId),
   component: CourseDetailPage,
+  errorComponent: ({ error }) => {
+    // Render an error message
+    return <GenericErrorComponent error={error} />;
+  },
   staticData: {
     showHeader: true,
     header: {
@@ -67,10 +72,10 @@ function CourseDetailPage() {
             <div className="flex-1 min-w-0">
               <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
                 <div className="flex-1 min-w-0">
-                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold mb-1 sm:mb-2 break-words">
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold mb-1 sm:mb-2 wrap-break-word">
                     {course.code}
                   </h1>
-                  <p className="text-base sm:text-lg lg:text-xl text-muted break-words">
+                  <p className="text-base sm:text-lg lg:text-xl text-muted wrap-break-word">
                     {course.title}
                   </p>
                 </div>
@@ -157,12 +162,12 @@ function CourseDetailPage() {
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
-                          <h3 className="text-base sm:text-lg font-semibold text-foreground break-words">
+                          <h3 className="text-base sm:text-lg font-semibold text-foreground wrap-break-word">
                             {subtopic.title}
                           </h3>
                         </div>
 
-                        <p className="text-xs sm:text-sm text-muted mb-2 sm:mb-3 break-words">
+                        <p className="text-xs sm:text-sm text-muted mb-2 sm:mb-3 wrap-break-word">
                           {subtopic.description}
                         </p>
 
@@ -224,8 +229,8 @@ function CourseDetailPage() {
                           className="group bg-surface-elevated hover:bg-accent/5 border-2 border-border hover:border-accent rounded-lg p-4 sm:p-6 transition-all text-left"
                           onClick={() =>
                             navigate({
-                              to: "/tutor", // or whatever your route path is
-                              params: { courseId: course.id },
+                              to: "/tutor/$topicId", // or whatever your route path is
+                              params: { topicId: subtopic.id },
                             })
                           }>
                           <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">

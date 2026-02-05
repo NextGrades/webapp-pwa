@@ -9,6 +9,9 @@ import CourseCard from "@/routes/courses/-components/CourseCard";
 import { courseClient } from "@/common/api/course/client";
 
 import { z } from "zod";
+import { GenericErrorComponent } from "@/components/GenericErrorComponent";
+import { useModal } from "@/context/ModalContext";
+import CreateCourseForm from "@/routes/courses/-components/CreateCourseForm";
 
 export const Route = createFileRoute("/courses/")({
   staticData: {
@@ -22,7 +25,20 @@ export const Route = createFileRoute("/courses/")({
   loader: ({ deps: { page, limit } }) =>
     courseClient.getCourseSummary(page, limit),
   component: CourseLibraryPage,
-  pendingComponent: CourseCardSkeleton,
+  pendingComponent: () => {
+    return (
+      <div className="container mt-4">
+        <CourseCardSkeleton />
+      </div>
+    );
+  },
+  errorComponent: ({ error }) => {
+    return (
+      <div className="container mt-4">
+        <GenericErrorComponent error={error} />
+      </div>
+    );
+  },
 });
 
 const FACULTIES = [
@@ -35,14 +51,13 @@ const FACULTIES = [
   "Mathematics",
 ];
 
-export default function CourseLibraryPage() {
+function CourseLibraryPage() {
   const courseSummary = Route.useLoaderData();
   const navigate = Route.useNavigate();
-  console.log(courseSummary);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFaculty, setSelectedFaculty] = useState("All");
   const [showFilters, setShowFilters] = useState(false);
-  // const [isLoading, setIsLoading] = useState(false);
+  const { open } = useModal();
 
   const COURSES = courseSummary.data;
 
@@ -60,8 +75,7 @@ export default function CourseLibraryPage() {
   });
 
   const handleSuggestCourse = () => {
-    console.log("Navigate to suggest course flow");
-    // router.navigate({ to: "/courses/suggest" })
+    open(<CreateCourseForm />);
   };
 
   return (

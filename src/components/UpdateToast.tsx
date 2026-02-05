@@ -75,8 +75,20 @@ export default function UpdateToast() {
   };
 
   const refresh = async () => {
-    await updateServiceWorker(true);
-    setTimeout(() => window.location.reload(), 150);
+    // Hide the modal FIRST, before anything reloads.
+    // Otherwise the modal is still mounted and visible during the reload race.
+    setVisible(false);
+    setTimeout(() => {
+      setShow(false);
+
+      // Pass false — do NOT let workbox-window's controllerchange handler reload.
+      // We control the reload ourselves after the modal is gone.
+      updateServiceWorker(false).then(() => {
+        // Give the SW a tick to actually activate after skipWaiting is posted,
+        // then do a single hard reload.
+        setTimeout(() => window.location.reload(), 200);
+      });
+    }, EXIT_ANIMATION_MS); // wait for the exit animation to finish
   };
 
   if (!show) return null;

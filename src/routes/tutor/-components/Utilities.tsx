@@ -1,4 +1,4 @@
-import type { Message } from "@/routes/tutor";
+import type { Message } from "@/routes/tutor/$topicId";
 import { TeachingResponseCard } from "@/routes/tutor/-components/TeachingResponseCard";
 import { Sparkles, Unlock } from "lucide-react";
 import ReactMarkdown from "react-markdown";

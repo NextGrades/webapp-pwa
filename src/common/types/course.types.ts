@@ -10,6 +10,7 @@ export interface CourseTutorResponse {
   workedExamples: string[];
   practicalApplications: string[];
   syllabusCoverage: string[];
+  followUpQuestions: string[];
 }
 
 export interface GenerateTeachingResponse {
